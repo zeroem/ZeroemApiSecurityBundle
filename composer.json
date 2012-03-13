@@ -1,0 +1,11 @@
+{
+    "name": "Zeroem/ApiAuthenticationBundle",
+    "description": "An API Token Based Authentication Bundle for RESTful APIs",
+    "authors": [
+        {
+            "name": "Darrell Hamilton",
+            "email": "darrell.noice@gmail.com"
+        }
+    ],
+    "require": {}
+}
