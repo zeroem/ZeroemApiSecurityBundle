@@ -1,6 +1,6 @@
 {
-    "name": "Zeroem/ApiAuthenticationBundle",
-    "description": "An API Token Based Authentication Bundle for RESTful APIs",
+    "name": "zeroem/api-authentication-bundle",
+    "description": "A Token/Secret Based Authentication System for RESTful APIs",
     "authors": [
         {
             "name": "Darrell Hamilton",
