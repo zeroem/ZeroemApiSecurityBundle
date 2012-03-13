@@ -1,5 +1,5 @@
 {
-    "name": "zeroem/api-authentication-bundle",
+    "name": "zeroem/api-security-bundle",
     "description": "A Token/Secret Based Authentication System for RESTful APIs",
     "type": "symfony-bundle",
     "authors": [

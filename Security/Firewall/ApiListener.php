@@ -1,4 +1,4 @@
-namespace Zeroem\ApiAuthenticationBundle\Security\Firewall;
+namespace Zeroem\ApiSecurityBundle\Security\Firewall;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Zeroem\ApiAuthenticationBundle\Security\Authentication\Token\WsseUserToken;
+use Zeroem\ApiSecurityBundle\Security\Authentication\Token\WsseUserToken;
 
 class ApiListener implements ListenerInterface
 {
