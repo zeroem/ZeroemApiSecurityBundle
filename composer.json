@@ -10,5 +10,11 @@
     ],
     "require": {
         "symfony/security": "2.*"
-    }
+    },
+    "autoload": {
+        "psr-0": {
+            "Zeroem\\ApiSecurityBundle": ""
+        }
+    },
+    "target-dir": "Zeroem/ApiSecurityBundle"
 }
