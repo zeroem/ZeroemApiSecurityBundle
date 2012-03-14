@@ -1,7 +1,8 @@
 {
     "name": "zeroem/api-security-bundle",
-    "description": "A Token/Secret Based Authentication System for RESTful APIs",
+    "description": "A Signed Request Based Authentication System for RESTful APIs",
     "type": "symfony-bundle",
+    "keywords": ["symfony","authentication","rest","api"]
     "authors": [
         {
             "name": "Darrell Hamilton",
