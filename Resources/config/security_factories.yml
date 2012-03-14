@@ -1,0 +1,5 @@
+services:
+    security.authentication.factory.api:
+        class:  Zeroem\ApiSecurityBundle\DependencyInjection\Security\Factory\ApiFactory
+        tags:
+            - { name: security.listener.factory }
