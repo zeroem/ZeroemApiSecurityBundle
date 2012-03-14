@@ -1,3 +1,5 @@
+<?php
+
 namespace Zeroem\ApiSecurityBundle\Security\Authentication\Provider;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
@@ -22,13 +24,18 @@ class ApiProvider implements AuthenticationProviderInterface
     }
 
     public function authenticate(TokenInterface $token) {
-        $apiUser = $this->userProvider->loadUserByUsername($token->apiToken);
 
-        if($apiUser && $this->notary->verify($apiUser,$token->request)) {
-            $authenticatedToken = new ApiToken($user->getRoles());
-            $authenticatedToken->setUser($user);
+        if($this->notary->canVerify($token->request)) {
+            $user = $this->userProvider->loadUserByUsername(
+                $this->notary->getUsername($token->request)
+            );
 
-            return $authenticatedToken;
+            if($user && $this->notary->verify($user,$token->request)) {
+                $authenticatedToken = new ApiToken($user->getRoles());
+                $authenticatedToken->setUser($user);
+
+                return $authenticatedToken;
+            }
         }
 
         throw new AuthenticationException('The Api authentication failed.');
