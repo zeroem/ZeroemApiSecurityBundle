@@ -11,6 +11,20 @@ class GeneralNotary implements NotaryInterface
     private static $authRegex = "/^API ([^:]*):(.*)(\r\n)?$/";
     private static $requiresContentMd5 = array("POST","PUT","PATCH");
 
+
+    public function getUsername(Request $request) {
+        $parts = array();
+        if(preg_match(self::$authRegex,$request->headers->get("authorization"),$parts)) {
+            return $parts[1];
+        }
+
+        return false;
+    }
+
+    public function canVerify(Request $request) {
+        return $request->headers->has("authorization") && preg_match(self::$authRegex,$request->headers->get("authorization"));
+    }
+
     public function sign(UserInterface $signator, Request $request) {
         $signature = $this->makeSignature($signator,$request);
 
@@ -77,7 +91,6 @@ class GeneralNotary implements NotaryInterface
     }
 
     public function verify(UserInterface $signator, Request $request) {
-
         // Enforce a time limit on the request
         if(!$this->isValidTimestamp($request->headers->getDate("date"))) {
             return false;

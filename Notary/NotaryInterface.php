@@ -23,5 +23,22 @@ interface NotaryInterface
      * @return boolean Whether or not the signature is valid
      */
     function verify(UserInterface $signator, Request $request);
+
+    /**
+     * Determine whether or not this notary can verify the given request
+     *
+     * @param Request $request The Request to check
+     * @return boolean whether or not the request can be verified
+     */
+    function canVerify(Request $request);
+
+
+    /**
+     * Retrieve the username we're going to verify the signature of
+     *
+     * @param Request $request
+     * @return string Username
+     */
+    function getUsername(Request $request);
 }
 
