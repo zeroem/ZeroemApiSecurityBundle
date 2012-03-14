@@ -26,31 +26,19 @@ class ApiListener implements ListenerInterface
     {
         $request = $event->getRequest();
 
-        if($request->headers->has("authorization")) {
-            $apiAuthRegex = "/^API ([^:]):(.*)(\r\n)?$/";
+        $token = new ApiToken();
+        $token->request = $request;
 
-            $matches = array();
-            $matched = preg_match($apiAuthRegex, $request->headers->get("authorization"),$matches);
-
-            if($matched) {
-                $token = new ApiToken();
-                
-                $token->apiToken = $matches[1];
-                $token->signature = $matches[2];
-                $token->request = $request;
-
-                try {
-                    $returnValue = $this->authenticationManager->authenticate($token);
+        try {
+            $returnValue = $this->authenticationManager->authenticate($token);
                     
-                    if ($returnValue instanceof TokenInterface) {
-                        return $this->securityContext->setToken($returnValue);
-                    } else if ($returnValue instanceof Response) {
-                        return $event->setResponse($returnValue);
-                    }
-                } catch( AthenticationException $e ) {
-                    // derp?
-                }
+            if ($returnValue instanceof TokenInterface) {
+                return $this->securityContext->setToken($returnValue);
+            } else if ($returnValue instanceof Response) {
+                return $event->setResponse($returnValue);
             }
+        } catch( AthenticationException $e ) {
+            // derp?
         }
 
         $response = new Response();
