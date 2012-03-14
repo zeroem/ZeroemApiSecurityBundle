@@ -1,8 +1,14 @@
 services:
+  api.security.athenication.notary:
+    class:  Zeroem\ApiSecurityBundle\Notary\GeneralNotary
+    arguments: []
+
   api.security.authentication.provider:
     class:  Zeroem\ApiSecurityBundle\Security\Authentication\Provider\ApiProvider
-    arguments: ['']
+    arguments: ['',@api.security.authentication.notary]
 
   api.security.authentication.listener:
     class:  Zeroem\ApiSecurityBundle\Security\Firewall\ApiListener
     arguments: [@security.context, @security.authentication.manager]
+
+  
