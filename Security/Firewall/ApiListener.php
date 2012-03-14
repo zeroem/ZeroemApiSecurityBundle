@@ -27,7 +27,7 @@ class ApiListener implements ListenerInterface
         $request = $event->getRequest();
 
         if($request->headers->has("authorization")) {
-            $apiAuthRegex = "/^API ([^:]):(.*)(\r\n)$/";
+            $apiAuthRegex = "/^API ([^:]):(.*)(\r\n)?$/";
 
             $matches = array();
             $matched = preg_match($apiAuthRegex, $request->headers->get("authorization"),$matches);

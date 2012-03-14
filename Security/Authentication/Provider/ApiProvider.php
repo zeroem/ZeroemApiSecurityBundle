@@ -12,21 +12,24 @@ use Zeroem\ApiSecurityBundle\Security\Authentication\Token\ApiToken;
 class ApiProvider implements AuthenticationProviderInterface
 {
     private $userProvider;
-    private $cacheDir;
 
     private static $requiresContentMd5 = array("POST","PUT","PATCH");
 
-    public function __construct(UserProviderInterface $userProvider, $cacheDir) {
+    public function __construct(UserProviderInterface $userProvider) {
         $this->userProvider = $userProvider;
-        $this->cacheDir     = $cacheDir;
     }
 
     public function authenticate(TokenInterface $token) {
         $apiUser = $this->userProvider->loadUserByUsername($token->apiToken);
 
         if($apiUser && $this->validateRequest($token->request, $user, $token->signature)) {
+            $authenticatedToken = new ApiToken($user->getRoles());
+            $authenticatedToken->setUser($user);
 
+            return $authenticatedToken;
         }
+
+        throw new AuthenticationException('The Api authentication failed.');
     }
 
     protected function validateRequest(Request $request, UserInterface $user, $providedSignature) {
@@ -49,14 +52,14 @@ class ApiProvider implements AuthenticationProviderInterface
 
         $message = implode("\n",$parts);
 
-        $calculatedSignature = hash_hmac("sha256",$message,$user->getPassword();
+        $calculatedSignature = hash_hmac("sha256",$message,$user->getPassword());
 
         return $calculatedSignature == $providedSignature;
     }
 
-           protected function isValidTimestamp($timestamp) {
-            return false !== $timestamp && (abs(time() - $timestamp) < 300)
-        }
+    protected function isValidTimestamp($timestamp) {
+        return false !== $timestamp && (abs(time() - $timestamp) < 300);
+    }
 
     protected function makeResource(Request $request) {
         $resource = $request->getBaseUrl();
