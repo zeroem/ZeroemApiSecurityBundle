@@ -9,7 +9,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Zeroem\ApiSecurityBundle\Security\Authentication\Token\WsseUserToken;
+
+use Zeroem\ApiSecurityBundle\Security\Authentication\Token\ApiToken;
 
 class ApiListener implements ListenerInterface
 {
