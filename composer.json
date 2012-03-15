@@ -12,6 +12,9 @@
     "require": {
         "symfony/security": "2.*"
     },
+    "suggest": {
+        "zeroem/curl-bundle":"*"
+    },
     "autoload": {
         "psr-0": {
             "Zeroem\\ApiSecurityBundle": ""
