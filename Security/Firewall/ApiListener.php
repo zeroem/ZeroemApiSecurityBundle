@@ -40,7 +40,7 @@ class ApiListener implements ListenerInterface
             } else if ($returnValue instanceof Response) {
                 return $event->setResponse($returnValue);
             }
-        } catch( AthenticationException $e ) {
+        } catch( AuthenticationException $e ) {
             // derp?
         }
 
