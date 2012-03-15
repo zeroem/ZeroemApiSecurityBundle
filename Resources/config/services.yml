@@ -1,5 +1,5 @@
 services:
-  api.security.athenication.notary:
+  api.security.authentication.notary:
     class:  Zeroem\ApiSecurityBundle\Notary\GeneralNotary
     arguments: []
 
