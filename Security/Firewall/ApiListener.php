@@ -1,3 +1,5 @@
+<?php
+
 namespace Zeroem\ApiSecurityBundle\Security\Firewall;
 
 use Symfony\Component\HttpFoundation\Response;
