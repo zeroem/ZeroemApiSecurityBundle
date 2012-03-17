@@ -14,7 +14,7 @@ class GeneralNotary implements NotaryInterface
 
     public function getUsername(Request $request) {
         $parts = array();
-        if(preg_match(self::$authRegex,$request->headers->get("authorization"),$parts)) {
+        if(preg_match(self::$authRegex,$this->getAuthorizationHeader(),$parts)) {
             return $parts[1];
         }
 
@@ -22,7 +22,8 @@ class GeneralNotary implements NotaryInterface
     }
 
     public function canVerify(Request $request) {
-        return $request->headers->has("authorization") && preg_match(self::$authRegex,$request->headers->get("authorization"));
+        $auth = $this->getAuthorizationHeader();
+        return $auth && preg_match(self::$authRegex,$auth);
     }
 
     public function sign(UserInterface $signator, Request $request) {
@@ -97,7 +98,7 @@ class GeneralNotary implements NotaryInterface
         }
 
         $parts = array();
-        if(preg_match(self::$authRegex,$request->headers->get("authorization"),$parts)) {
+        if(preg_match(self::$authRegex,$this->getAuthorizationHeader(),$parts)) {
             $requestUser = $parts[1];
             $requestSignature = $parts[2];
             
@@ -106,6 +107,22 @@ class GeneralNotary implements NotaryInterface
 
                 if($calculatedSignature == $requestSignature) {
                     return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function getAuthorizationHeader(Request $request) {
+        if($request->headers->has("authorization")) {
+            return $request->headers->get("authorization");
+        } else {
+            $headers = apache_request_headers();
+
+            if(isset($headers["Date"]) && $headers["Date"] == $request->headers->get("date")) {
+                if(isset($headers["Authorization"])) {
+                    return $headers["Authorization"];
                 }
             }
         }
