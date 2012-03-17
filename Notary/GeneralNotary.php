@@ -14,7 +14,7 @@ class GeneralNotary implements NotaryInterface
 
     public function getUsername(Request $request) {
         $parts = array();
-        if(preg_match(self::$authRegex,$this->getAuthorizationHeader(),$parts)) {
+        if(preg_match(self::$authRegex,$this->getAuthorizationHeader($request),$parts)) {
             return $parts[1];
         }
 
@@ -22,7 +22,7 @@ class GeneralNotary implements NotaryInterface
     }
 
     public function canVerify(Request $request) {
-        $auth = $this->getAuthorizationHeader();
+        $auth = $this->getAuthorizationHeader($request);
         return $auth && preg_match(self::$authRegex,$auth);
     }
 
@@ -38,7 +38,6 @@ class GeneralNotary implements NotaryInterface
     }
 
     private function makeSignature(UserInterface $signator, Request $request) {
-        
         $parts = array();
         $parts[] = $request->getMethod();
         if($request->headers->has("content-md5")) {
@@ -48,7 +47,9 @@ class GeneralNotary implements NotaryInterface
         }
 
         $parts[] = $request->headers->get("date");
-        $parts[] = $this->makeResource($request);
+
+        // the Request object already sorts the QS parameters
+        $parts[] = $request->getUri();
 
         $message = implode("\n",$parts);
 
@@ -65,32 +66,6 @@ class GeneralNotary implements NotaryInterface
         return  (abs(time() - $date->getTimestamp()) < 300);
     }
 
-    /**
-     * Generate a properly formed "Resource" URL
-     * 
-     * @param Request $request
-     */
-    private function makeResource(Request $request) {
-        $resource = $request->getBaseUrl();
-
-        $queryArray = $request->query->all();
-        if(!empty($queryArray)) {
-            ksort($queryArray,SORT_STRING);
-            $params = "";
-            foreach($queryArray as $key=>$value) {
-                if(!empty($params)) {
-                    $params .= "&";
-                }
-
-                $params .= "{$key}={$value}";
-            }
-
-            $resource .= "?{$params}";
-        }
-
-        return $resource;
-    }
-
     public function verify(UserInterface $signator, Request $request) {
         // Enforce a time limit on the request
         if(!$this->isValidTimestamp($request->headers->getDate("date"))) {
@@ -98,7 +73,7 @@ class GeneralNotary implements NotaryInterface
         }
 
         $parts = array();
-        if(preg_match(self::$authRegex,$this->getAuthorizationHeader(),$parts)) {
+        if(preg_match(self::$authRegex,$this->getAuthorizationHeader($request),$parts)) {
             $requestUser = $parts[1];
             $requestSignature = $parts[2];
             
