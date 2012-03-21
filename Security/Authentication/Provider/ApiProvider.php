@@ -24,17 +24,19 @@ class ApiProvider implements AuthenticationProviderInterface
     }
 
     public function authenticate(TokenInterface $token) {
-        if($this->supports($token) && $this->notary->canVerify($token->request)) {
-            $user = $this->userProvider->loadUserByUsername(
-                $this->notary->getUsername($token->request)
-            );
+        if ($this->supports($token)) {
+            if ($this->notary->canVerify($token->request)) {
+                $user = $this->userProvider->loadUserByUsername(
+                    $this->notary->getUsername($token->request)
+                );
 
-            if($user && $this->notary->verify($user,$token->request)) {
-                $authenticatedToken = new ApiToken($user->getRoles());
-                $authenticatedToken->setUser($user);
-                $authenticatedToken->request = $token->request;
+                if($user && $this->notary->verify($user,$token->request)) {
+                    $authenticatedToken = new ApiToken($user->getRoles());
+                    $authenticatedToken->setUser($user);
+                    $authenticatedToken->request = $token->request;
 
-                return $authenticatedToken;
+                    return $authenticatedToken;
+                }
             }
         } else {
             return null;

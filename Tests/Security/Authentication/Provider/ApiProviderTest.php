@@ -35,7 +35,7 @@ class ApiProviderTest extends \PHPUnit_Framework_Testcase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AuthenticationException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AuthenticationException
      */
     public function testCannotVerifyRequest() {
         $user = $this->makeMockUser();
