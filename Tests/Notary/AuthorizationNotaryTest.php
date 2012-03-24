@@ -7,14 +7,14 @@ use Zeroem\ApiSecurityBundle\Notary\GeneralNotary;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class GeneralNotaryTest extends \PHPUnit_Framework_Testcase
+class AuthorizationNotaryTest extends \PHPUnit_Framework_Testcase
 {
 
     public function testRequestSigning() {
         $request = Request::create("http://symfony.com");
         $request->headers->set("date",date("r"));
 
-        $notary = new GeneralNotary();
+        $notary = new AuthorizationNotary();
 
         $notary->sign($this->getMockUserA(),$request);
 
@@ -27,7 +27,7 @@ class GeneralNotaryTest extends \PHPUnit_Framework_Testcase
      * @depends testRequestSigning
      */
     public function testSignatureVerification(Request $request) {
-        $notary = new GeneralNotary();
+        $notary = new AuthorizationNotary();
 
         $this->assertFalse($notary->verify($this->getMockUserB(),$request));
         $this->assertFalse($notary->verify($this->getMockImposterA(),$request));
