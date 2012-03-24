@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
-class GeneralNotary implements NotaryInterface
+class AuthorizationNotary implements NotaryInterface
 {
     private static $authRegex = "/^API ([^:]*):(.*)(\r\n)?$/";
     private static $requiresContentMd5 = array("POST","PUT","PATCH");
