@@ -108,7 +108,7 @@ class ApiProviderTest extends \PHPUnit_Framework_Testcase
 
     private function getNotary(UserInterface $user, $success=true, $canVerify=true) {
         $notary = $this->getMock(
-            "Zeroem\ApiSecurityBundle\Notary\GeneralNotary",
+            "Zeroem\ApiSecurityBundle\Notary\AuthorizationNotary",
             array("verify","canVerify","getUsername")
         );
 

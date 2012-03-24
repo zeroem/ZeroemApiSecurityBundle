@@ -2,7 +2,7 @@
 
 namespace Zeroem\ApiSecurityBundle\Tests\Notary;
 
-use Zeroem\ApiSecurityBundle\Notary\GeneralNotary;
+use Zeroem\ApiSecurityBundle\Notary\AuthorizationNotary;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
