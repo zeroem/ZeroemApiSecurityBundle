@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
-class PolicyNotary implements NotaryInterface
+class FormNotary implements NotaryInterface
 {
     private static $requiredFields = array("api_token","signature","date","resource");
     private static $optionalFields = array();
